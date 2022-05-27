@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,19 +42,19 @@ import java.util.stream.Collectors;
 @Service
 public class UmsAdminServiceImpl implements UmsAdminService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminServiceImpl.class);
-    @Autowired
+    @Resource
     private UmsAdminMapper adminMapper;
-    @Autowired
+    @Resource
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
-    @Autowired
+    @Resource
     private UmsAdminRoleRelationDao adminRoleRelationDao;
-    @Autowired
+    @Resource
     private UmsAdminLoginLogMapper loginLogMapper;
-    @Autowired
+    @Resource
     private AuthService authService;
-    @Autowired
+    @Resource
     private UmsAdminCacheService adminCacheService;
-    @Autowired
+    @Resource
     private HttpServletRequest request;
 
     @Override
@@ -112,7 +113,9 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      */
     private void insertLoginLog(String username) {
         UmsAdmin admin = getAdminByUsername(username);
-        if(admin==null) return;
+        if(admin==null) {
+            return;
+        }
         UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
         loginLog.setAdminId(admin.getId());
         loginLog.setCreateTime(new Date());
